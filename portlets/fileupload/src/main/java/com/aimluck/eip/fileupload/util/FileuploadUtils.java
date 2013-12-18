@@ -538,6 +538,7 @@ public class FileuploadUtils {
    * @param height
    * @return
    */
+
   public static BufferedImage shrinkAndTrimImage(BufferedImage imgfile,
       int width, int height) {
     int iwidth = imgfile.getWidth();
@@ -545,12 +546,20 @@ public class FileuploadUtils {
     double ratio =
       Math.max((double) width / (double) iwidth, (double) height
         / (double) iheight);
-    int shrinkedWidth = (int) (iwidth * ratio);
-    int shrinkedHeight = (int) (iheight * ratio);
+    int shrinkedWidth;
+    int shrinkedHeight;
 
+    if ((iwidth <= width) || (iheight < height)) {
+      shrinkedWidth = iwidth;
+      shrinkedHeight = iheight;
+    } else {
+      shrinkedWidth = (int) (iwidth * ratio);
+      shrinkedHeight = (int) (iheight * ratio);
+    }
     // 縮小後の画像よりも大きくトリミングしないようにする
     int _width = width;
     int _height = height;
+
     if (shrinkedWidth < width) {
       _width = shrinkedWidth;
     }
@@ -560,10 +569,9 @@ public class FileuploadUtils {
 
     // イメージデータを縮小する
     Image targetImage =
-      imgfile.getScaledInstance(
-        shrinkedWidth,
-        shrinkedHeight,
-        Image.SCALE_AREA_AVERAGING);
+      imgfile.getScaledInstance(shrinkedWidth, shrinkedHeight,
+
+      Image.SCALE_AREA_AVERAGING);
     BufferedImage tmpImage =
       new BufferedImage(
         targetImage.getWidth(null),
@@ -575,7 +583,9 @@ public class FileuploadUtils {
     g.drawImage(targetImage, 0, 0, null);
     int _iwidth = tmpImage.getWidth();
     int _iheight = tmpImage.getHeight();
+
     BufferedImage _tmpImage;
+
     if (_iwidth > _iheight) {
       int diff = _iwidth - _width;
       _tmpImage = tmpImage.getSubimage(diff / 2, 0, _width, _height);
