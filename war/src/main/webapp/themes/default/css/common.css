@@ -2877,6 +2877,10 @@ ul.blockList li a.selected {
 .pl100 {padding-left: 100px !important;}
 .pa100 {padding: 100px !important;}
 
+.noBorder {
+  border: none !important;
+}
+
 /***************************************************
 	font
 --------------------------------------------------*/
